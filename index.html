@@ -118,13 +118,13 @@ button{border:0;border-radius:0;padding:13px 18px;font:inherit;font-weight:850;c
 
 <section class="summary">
  <div class="section-head"><span class="step">04</span><h3>Payment Summary</h3></div>
- <div class="line"><div><b>Monthly Rental</b><span class="detail">For reference · excludes move-in total</span></div><strong class="amount" id="sumMonthly">RM 0.00</strong></div>
- <div class="line"><div><b>Prorated Advance Rental</b><span class="detail" id="sumDate">Based on selected move-in date</span></div><strong class="amount" id="sumProrated">RM 0.00</strong></div>
- <div class="line"><div><b>Tenancy Agreement</b><span class="detail" id="agreementRemark">Select Room (35%) or Studio (25%)</span></div><strong class="amount" id="agreement">RM 0.00</strong></div>
- <div class="line"><div><b>Security Deposit</b><span class="detail" id="depositRemark">2 months</span></div><strong class="amount" id="depositTotal">RM 0.00</strong></div>
+ <div class="line" id="sumMonthlyLine"><div><b>Monthly Rental</b><span class="detail">Booking as 1st mth rental</span></div><strong class="amount" id="sumMonthly">RM 0.00</strong></div>
+ <div class="line" id="sumProratedLine"><div><b>Prorated Advance Rental</b><span class="detail" id="sumDate">Based on selected move-in date</span></div><strong class="amount" id="sumProrated">RM 0.00</strong></div>
+ <div class="line" id="sumAgreementLine"><div><b>Tenancy Agreement</b><span class="detail" id="agreementRemark">Select Room (35%) or Studio (25%)</span></div><strong class="amount" id="agreement">RM 0.00</strong></div>
+ <div class="line" id="sumDepositLine"><div><b>Security Deposit</b><span class="detail" id="depositRemark">2 months</span></div><strong class="amount" id="depositTotal">RM 0.00</strong></div>
  <div class="line" id="adminLine" hidden><div><b>Split Deposit Admin Fee</b><span class="detail">Charged in the first month</span></div><strong class="amount">RM 100.00</strong></div>
  <div class="split-summary" id="splitSummary" hidden>
-  <div class="split-card"><small>First Month Deposit</small><strong id="firstDeposit">RM 0.00</strong><div class="hint">Plus RM100 admin fee</div></div>
+  <div class="split-card"><small>First Month Payment</small><strong id="firstDeposit">RM 0.00</strong><div class="hint">Plus RM100 admin fee</div></div>
   <div class="split-card"><small>Second Month Deposit</small><strong id="secondDeposit">RM 0.00</strong></div>
  </div>
  <div class="grand"><small id="grandLabel">Total Move-in Payment · First Month</small><div class="big" id="grandTotal">RM 0.00</div><div class="hint" id="grandNote" style="color:#333">Includes prorated rental, agreement fee and full security deposit.</div></div>
@@ -153,7 +153,7 @@ function calculate(){
  const mode=selectedMode(),months=mode==='standard'?val('standardMonths'):val('splitMonths');
  const deposit=monthly*months,first=mode==='split'?(months===2?monthly:monthly*1.5):deposit,second=mode==='split'?monthly:0;
  const admin=mode==='split'?100:0;
- const firstTotal=prorated+agreement+first+admin;
+ const firstTotal=monthly+prorated+agreement+first+admin;
  $('rentLine').textContent=money(rent);$('paxLine').textContent=money(pax);$('parkingLine').textContent=money(parking);
  $('monthlyTotal').textContent=money(monthly);$('sumMonthly').textContent=money(monthly);
  $('dateHint').textContent=$('moveIn').value?'Move-in date: '+dateText+'. The move-in date is included.':'Select the move-in date. The move-in day is included in the calculation.';
@@ -161,9 +161,9 @@ function calculate(){
  $('agreement').textContent=money(agreement);$('agreementRemark').textContent=type==='Not selected'?'Select Room (35%) or Studio (25%)':type+' · '+(room?'35%':'25%')+' of monthly rental';
  $('depositTotal').textContent=money(deposit);$('depositRemark').textContent=months+' '+(months===1?'month':'months')+(mode==='split'?' · split payment':' · standard payment');
  $('standardPanel').hidden=mode!=='standard';$('splitPanel').hidden=mode!=='split';
- $('adminLine').hidden=mode!=='split';$('splitSummary').hidden=mode!=='split';
+ $('adminLine').hidden=mode!=='split';$('splitSummary').hidden=mode!=='split';$('sumMonthlyLine').hidden=mode!=='split';$('sumProratedLine').hidden=mode!=='split';$('sumAgreementLine').hidden=mode!=='split';$('sumDepositLine').hidden=mode!=='split';
  // The RM100 split-deposit admin fee is displayed only for Option B.
- $('firstDeposit').textContent=money(first);$('secondDeposit').textContent=money(second);
+ $('firstDeposit').textContent=money(firstTotal);$('secondDeposit').textContent=money(second);
  $('grandTotal').textContent=money(firstTotal);
  $('grandLabel').textContent=mode==='split'?'Total Due · First Month':'Total Move-in Payment';
  $('grandNote').textContent=mode==='split'?'First month includes prorated rental, agreement fee, first deposit instalment and RM100 admin fee. Second month deposit: '+money(second)+'.':'Includes prorated rental, agreement fee and full security deposit.';
