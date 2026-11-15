@@ -161,7 +161,7 @@ function calculate(){
  $('agreement').textContent=money(agreement);$('agreementRemark').textContent=type==='Not selected'?'Select Room (35%) or Studio (25%)':type+' · '+(room?'35%':'25%')+' of monthly rental';
  $('depositTotal').textContent=money(deposit);$('depositRemark').textContent=months+' '+(months===1?'month':'months')+(mode==='split'?' · split payment':' · standard payment');
  $('standardPanel').hidden=mode!=='standard';$('splitPanel').hidden=mode!=='split';
- $('adminLine').hidden=mode!=='split';$('splitSummary').hidden=mode!=='split';$('sumMonthlyLine').hidden=mode!=='split';$('sumProratedLine').hidden=mode!=='split';$('sumAgreementLine').hidden=mode!=='split';$('sumDepositLine').hidden=mode!=='split';
+ $('adminLine').hidden=mode!=='split';$('splitSummary').hidden=mode!=='split';$('sumMonthlyLine').hidden=false;$('sumProratedLine').hidden=false;$('sumAgreementLine').hidden=false;$('sumDepositLine').hidden=false;
  // The RM100 split-deposit admin fee is displayed only for Option B.
  $('firstDeposit').textContent=money(firstTotal);$('secondDeposit').textContent=money(second);
  $('grandTotal').textContent=money(firstTotal);
