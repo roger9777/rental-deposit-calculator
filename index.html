@@ -92,7 +92,7 @@ button{border:0;border-radius:0;padding:13px 18px;font:inherit;font-weight:850;c
   <div class="field"><label for="moveIn">Move-in / Start Date</label><input id="moveIn" type="date"></div>
   <div class="field"><label>Calculation</label><div style="height:48px;display:flex;align-items:center;font-size:12px;color:#666">Monthly rental ÷ days in month × remaining days</div></div>
  </div>
- <div class="hint" id="dateHint">Select the move-in date. The move-in day is included in the calculation.</div>
+ <div class="hint" id="dateHint">Select the move-in date. The move-in day is included. Formula: Monthly Rental ÷ days in that month × chargeable days.</div>
  <div class="breakdown"><div class="line"><span>Prorated Advance Rental</span><strong class="amount" id="prorated">RM 0.00</strong></div></div>
 </section>
 
@@ -104,10 +104,12 @@ button{border:0;border-radius:0;padding:13px 18px;font:inherit;font-weight:850;c
  </div>
  <div id="standardPanel" class="subpanel">
   <div class="field"><label for="standardMonths">Deposit Amount</label><select id="standardMonths"><option value="1">1 Month</option><option value="1.5">1.5 Months</option><option value="2" selected>2 Months</option><option value="2.5">2.5 Months</option></select></div>
+  <div class="hint">Security deposit is based on the full Monthly Rental, including additional pax and parking.</div>
  </div>
  <div id="splitPanel" class="subpanel" hidden>
   <div class="field"><label for="splitMonths">Split Deposit Plan</label><select id="splitMonths"><option value="2">2 Months — First month 1 month + Second month 1 month</option><option value="2.5">2.5 Months — First month 1.5 months + Second month 1 month</option></select></div>
-  <div class="hint">A RM100 admin fee is added to the first month's split payment.</div>
+  <div class="hint">Security deposit is based on the full Monthly Rental, including additional pax and parking.</div>
+  <div class="hint">A RM100 admin fee is added to the first month's split payment. The second month's instalment is RM1 month's rental.</div>
  </div>
 </section>
 
