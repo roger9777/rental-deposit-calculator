@@ -164,7 +164,7 @@ function calculate(){
  $('adminLine').hidden=mode!=='split';$('splitSummary').hidden=mode!=='split';$('sumMonthlyLine').hidden=false;$('sumProratedLine').hidden=false;$('sumAgreementLine').hidden=false;$('sumDepositLine').hidden=false;
  // The RM100 split-deposit admin fee is displayed only for Option B.
  $('firstDeposit').textContent=money(firstTotal);$('secondDeposit').textContent=money(second);
- $('grandTotal').textContent=money(firstTotal);
+ $('grandTotal').textContent=money(mode==='split'?firstTotal+second:firstTotal);
  $('grandLabel').textContent=mode==='split'?'Total Due · First Month':'Total Move-in Payment';
  $('grandNote').textContent=mode==='split'?'First month includes prorated rental, agreement fee, first deposit instalment and RM100 admin fee. Second month deposit: '+money(second)+'.':'Includes prorated rental, agreement fee and full security deposit.';
  return {rent,pax,parking,monthly,room,studio,type,agreement,prorated,dateText,mode,months,deposit,first,second,admin,firstTotal};
