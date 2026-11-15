@@ -23,12 +23,15 @@ header{display:flex;align-items:center;gap:15px;margin:4px 0 22px}
 .step{background:var(--yellow);width:32px;height:32px;display:grid;place-items:center;font-weight:900;font-size:13px}
 .section-head h3{font-size:16px;letter-spacing:-.02em;margin:0;font-weight:850}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.field{min-width:0}.field label,.field-label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:800;color:#55554e;margin-bottom:7px}
+.field{min-width:0}.field > label:not(.choice),.field-label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:800;color:#55554e;margin-bottom:7px}
 input[type=number],input[type=date],select{width:100%;height:48px;border:1px solid #d8d8d0;background:#fff;border-radius:0;padding:0 12px;font:inherit;color:var(--black);outline:none}
 input:focus,select:focus{border-color:#111;box-shadow:0 0 0 2px #f3f000}
 .choice-row{display:flex;gap:9px;flex-wrap:wrap}
-.choice{display:flex;align-items:center;gap:9px;border:1px solid #d8d8d0;padding:12px 13px;min-height:48px;flex:1;cursor:pointer;font-size:13px;font-weight:700}
-.choice input{width:18px;height:18px;accent-color:#111;margin:0}
+.choice{display:flex;align-items:center;gap:10px;border:1px solid #d8d8d0;padding:12px 13px;min-height:48px;flex:1;cursor:pointer;font-size:13px;font-weight:700;line-height:1.25;text-transform:none;letter-spacing:normal;color:var(--black);margin:0}
+.choice input{width:18px;height:18px;min-width:18px;flex:none;accent-color:#111;margin:0}
+.unit-type .choice-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.unit-type .choice{justify-content:flex-start;min-height:54px;padding:12px 15px}
+.unit-type .choice span{display:block;line-height:1.25}
 .hint{font-size:11px;color:var(--muted);margin-top:6px}
 .breakdown{margin-top:16px;border-top:1px solid var(--line)}
 .line{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid #efefe9;font-size:13px}
@@ -73,7 +76,7 @@ button{border:0;border-radius:0;padding:13px 18px;font:inherit;font-weight:850;c
   <div class="field"><label for="rent">Rental Price (RM)</label><input id="rent" type="number" min="0" step="0.01" placeholder="Enter rental price"></div>
   <div class="field"><label for="parking">Parking</label><select id="parking"><option value="0">No parking — RM0</option><option value="100">RM100</option><option value="150">RM150</option></select></div>
   <div class="field"><span class="field-label">Additional Pax</span><label class="choice"><input id="pax" type="checkbox"><span>Additional 1 pax <b>+ RM50 / month</b></span></label></div>
-  <div class="field"><span class="field-label">Unit Type (select one)</span><div class="choice-row">
+  <div class="field unit-type"><span class="field-label">Unit Type (select one)</span><div class="choice-row">
    <label class="choice"><input type="checkbox" id="room"><span>Room</span></label>
    <label class="choice"><input type="checkbox" id="studio"><span>Studio</span></label>
   </div></div>
@@ -159,6 +162,7 @@ function calculate(){
  $('depositTotal').textContent=money(deposit);$('depositRemark').textContent=months+' '+(months===1?'month':'months')+(mode==='split'?' · split payment':' · standard payment');
  $('standardPanel').hidden=mode!=='standard';$('splitPanel').hidden=mode!=='split';
  $('adminLine').hidden=mode!=='split';$('splitSummary').hidden=mode!=='split';
+ // The RM100 split-deposit admin fee is displayed only for Option B.
  $('firstDeposit').textContent=money(first);$('secondDeposit').textContent=money(second);
  $('grandTotal').textContent=money(firstTotal);
  $('grandLabel').textContent=mode==='split'?'Total Due · First Month':'Total Move-in Payment';
