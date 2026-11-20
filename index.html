@@ -73,6 +73,7 @@ button{border:0;border-radius:0;padding:13px 18px;font:inherit;font-weight:850;c
 <section class="panel">
  <div class="section-head"><span class="step">01</span><h3>Monthly Rental</h3></div>
  <div class="grid">
+  <div class="field"><label for="unitNumber">Unit Number</label><input id="unitNumber" type="text" placeholder="Enter unit number"></div>
   <div class="field"><label for="rent">Rental Price (RM)</label><input id="rent" type="number" min="0" step="0.01" placeholder="Enter rental price"></div>
   <div class="field"><label for="parking">Parking</label><select id="parking"><option value="0">No parking — RM0</option><option value="100">RM100</option><option value="150">RM150</option></select></div>
   <div class="field"><span class="field-label">Additional Pax</span><label class="choice"><input id="pax" type="checkbox"><span>Additional 1 pax <b>+ RM50 / month</b></span></label></div>
@@ -118,6 +119,7 @@ button{border:0;border-radius:0;padding:13px 18px;font:inherit;font-weight:850;c
 
 <section class="summary">
  <div class="section-head"><span class="step">04</span><h3>Payment Summary</h3></div>
+ <div class="line" id="sumUnitLine"><div><b>Unit Number</b></div><strong class="amount" id="sumUnitNumber">—</strong></div>
  <div class="line" id="sumMonthlyLine"><div><b>Monthly Rental</b><span class="detail">Booking as 1st mth rental</span></div><strong class="amount" id="sumMonthly">RM 0.00</strong></div>
  <div class="line" id="sumProratedLine"><div><b>Prorated Advance Rental</b><span class="detail" id="sumDate">Based on selected move-in date</span></div><strong class="amount" id="sumProrated">RM 0.00</strong></div>
  <div class="line" id="sumAgreementLine"><div><b>Tenancy Agreement</b><span class="detail" id="agreementRemark">Select Room (35%) or Studio (25%)</span></div><strong class="amount" id="agreement">RM 0.00</strong></div>
@@ -129,6 +131,13 @@ button{border:0;border-radius:0;padding:13px 18px;font:inherit;font-weight:850;c
  </div>
  <div class="grand"><small id="grandLabel">Total Move-in Payment · First Month</small><div class="big" id="grandTotal">RM 0.00</div><div class="hint" id="grandNote" style="color:#333">Includes prorated rental, agreement fee and full security deposit.</div></div>
  <div class="actions"><button class="primary" id="copyBtn">Copy Summary</button><button class="secondary" id="printBtn">Print / Save PDF</button></div>
+</section>
+
+<section class="summary booking-account">
+ <div class="section-head"><span class="step">05</span><h3>Booking Account</h3></div>
+ <div class="line"><span>Bank Name</span><strong class="amount">CIMB BANK</strong></div>
+ <div class="line"><span>Account Holder Name</span><strong class="amount">BLANKCO HOLDINGS SDN BHD</strong></div>
+ <div class="line"><span>Account Number</span><strong class="amount">8011414579</strong></div>
 </section>
 <div class="foot">THE BLANK · Rental Calculator · Calculations are performed in your browser. No tenant information is stored.</div>
 </div>
@@ -154,6 +163,7 @@ function calculate(){
  const deposit=monthly*months,first=mode==='split'?(months===2?monthly:monthly*1.5):deposit,second=mode==='split'?monthly:0;
  const admin=mode==='split'?100:0;
  const firstTotal=monthly+prorated+agreement+first+admin;
+ $('sumUnitNumber').textContent=$('unitNumber').value.trim()||'—';
  $('rentLine').textContent=money(rent);$('paxLine').textContent=money(pax);$('parkingLine').textContent=money(parking);
  $('monthlyTotal').textContent=money(monthly);$('sumMonthly').textContent=money(monthly);
  $('dateHint').textContent=$('moveIn').value?'Move-in date: '+dateText+'. The move-in date is included.':'Select the move-in date. The move-in day is included in the calculation.';
@@ -167,13 +177,13 @@ function calculate(){
  $('grandTotal').textContent=money(mode==='split'?firstTotal+second:firstTotal);
  $('grandLabel').textContent=mode==='split'?'Total Due · First Month':'Total Move-in Payment';
  $('grandNote').textContent=mode==='split'?'First month includes prorated rental, agreement fee, first deposit instalment and RM100 admin fee. Second month deposit: '+money(second)+'.':'Includes prorated rental, agreement fee and full security deposit.';
- return {rent,pax,parking,monthly,room,studio,type,agreement,prorated,dateText,mode,months,deposit,first,second,admin,firstTotal};
+ return {unitNumber:$('unitNumber').value.trim(),rent,pax,parking,monthly,room,studio,type,agreement,prorated,dateText,mode,months,deposit,first,second,admin,firstTotal};
 }
 function summaryText(){
  const x=calculate();
- return 'THE BLANK — RENTAL PAYMENT SUMMARY\n\nMONTHLY RENTAL\nRental Price: '+money(x.rent)+'\nAdditional Pax: '+money(x.pax)+'\nParking: '+money(x.parking)+'\nMonthly Rental: '+money(x.monthly)+'\n\nMOVE-IN PAYMENT\nMove-in Date: '+x.dateText+'\nProrated Advance Rental: '+money(x.prorated)+'\nTenancy Agreement ('+x.type+'): '+money(x.agreement)+'\nSecurity Deposit ('+x.months+' months): '+money(x.deposit)+(x.mode==='split'?'\nFirst Month Deposit: '+money(x.first)+'\nSecond Month Deposit: '+money(x.second)+'\nSplit Deposit Admin Fee: '+money(x.admin):'')+'\n\nTOTAL DUE FIRST MONTH: '+money(x.firstTotal)+(x.mode==='split'?'\nSECOND MONTH PAYMENT: '+money(x.second):'');
+ return 'THE BLANK — RENTAL PAYMENT SUMMARY\n\nUNIT NUMBER: '+(x.unitNumber||'—')+'\n\nMONTHLY RENTAL\nRental Price: '+money(x.rent)+'\nAdditional Pax: '+money(x.pax)+'\nParking: '+money(x.parking)+'\nMonthly Rental: '+money(x.monthly)+'\n\nMOVE-IN PAYMENT\nMove-in Date: '+x.dateText+'\nProrated Advance Rental: '+money(x.prorated)+'\nTenancy Agreement ('+x.type+'): '+money(x.agreement)+'\nSecurity Deposit ('+x.months+' months): '+money(x.deposit)+(x.mode==='split'?'\nFirst Month Deposit: '+money(x.first)+'\nSecond Month Deposit: '+money(x.second)+'\nSplit Deposit Admin Fee: '+money(x.admin):'')+'\n\nBOOKING ACCOUNT\nBank Name: CIMB BANK\nAccount Holder Name: BLANKCO HOLDINGS SDN BHD\nAccount Number: 8011414579\n\nTOTAL DUE FIRST MONTH: '+money(x.firstTotal)+(x.mode==='split'?'\nSECOND MONTH PAYMENT: '+money(x.second):'');
 }
-['rent','parking','pax','moveIn','standardMonths','splitMonths','room','studio'].forEach(id=>$(id).addEventListener('input',calculate));
+['unitNumber','rent','parking','pax','moveIn','standardMonths','splitMonths','room','studio'].forEach(id=>$(id).addEventListener('input',calculate));
 document.querySelectorAll('input[name="depositMode"]').forEach(el=>el.addEventListener('change',calculate));
 $('room').addEventListener('change',()=>{if($('room').checked)$('studio').checked=false;calculate()});
 $('studio').addEventListener('change',()=>{if($('studio').checked)$('room').checked=false;calculate()});
